@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -29,7 +30,20 @@ public class BaseTest
 	{
 		if(p.getProperty(browser).equals("chrome")){
 			System.setProperty("webdriver.chrome.driver", projectPath+"\\drivers\\chromedriver.exe");
-			driver=new ChromeDriver();
+			
+			ChromeOptions option=new ChromeOptions();
+			option.addArguments("user-data-dir=C:\\Users\\DELL\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 11");
+			
+			
+			option.addArguments("--disable-notifications");
+			option.addArguments("--disable-infobars");
+			option.addArguments("--start-maximized");
+			
+			
+			//Proxy IP Configuration
+			//option.addArguments("--proxy-server=http://192.168.90.84:1234");
+			
+			driver=new ChromeDriver(option);
 		}else if(p.getProperty(browser).equals("firefox")) {
 			
 			System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "e://firefoxlogs.txt");
