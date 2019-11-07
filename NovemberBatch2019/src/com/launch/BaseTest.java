@@ -3,6 +3,7 @@ package com.launch;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,6 +16,7 @@ public class BaseTest
 {
 	public static WebDriver driver;
 	public static Properties p;
+	public static Properties or;
 	public static String projectPath=System.getProperty("user.dir");
 	
 	
@@ -24,6 +26,10 @@ public class BaseTest
 		FileInputStream fis=new FileInputStream(projectPath+"//data.properties");
 		p=new Properties();
 		p.load(fis);
+		
+		FileInputStream fis1=new FileInputStream(projectPath+"//or.properties");
+		or=new Properties();
+		or.load(fis1);
 	}
 	
 	public static void launch(String browser)
@@ -73,6 +79,22 @@ public class BaseTest
 		//driver.get(p.getProperty(url));
 		
 		driver.navigate().to(p.getProperty(url));
+	}
+	
+	
+	public static void clickElement(String locatorKey) 
+	{
+		driver.findElement(By.xpath(or.getProperty(locatorKey))).click();
+	}
+
+	public static void typeValue(String locatorKey, String value) 
+	{
+		driver.findElement(By.name(or.getProperty(locatorKey))).sendKeys(or.getProperty(value));
+	}
+
+	public static void selectOption(String locatorKey, String option) 
+	{
+		driver.findElement(By.id(or.getProperty(locatorKey))).sendKeys(or.getProperty(option));	
 	}
 
 }
