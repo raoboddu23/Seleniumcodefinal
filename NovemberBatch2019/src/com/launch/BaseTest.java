@@ -3,8 +3,10 @@ package com.launch;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -30,6 +32,8 @@ public class BaseTest
 		FileInputStream fis1=new FileInputStream(projectPath+"//or.properties");
 		or=new Properties();
 		or.load(fis1);
+		
+		PropertyConfigurator.configure(projectPath+"//log4j.properties");
 	}
 	
 	public static void launch(String browser)
@@ -84,17 +88,47 @@ public class BaseTest
 	
 	public static void clickElement(String locatorKey) 
 	{
-		driver.findElement(By.xpath(or.getProperty(locatorKey))).click();
+		getElement(locatorKey).click();
+		//driver.findElement(By.xpath(or.getProperty(locatorKey))).click();
 	}
 
 	public static void typeValue(String locatorKey, String value) 
 	{
-		driver.findElement(By.name(or.getProperty(locatorKey))).sendKeys(or.getProperty(value));
+		getElement(locatorKey).sendKeys(or.getProperty(value));
+		//driver.findElement(By.id(or.getProperty(locatorKey))).sendKeys(or.getProperty(value));
 	}
+
+	
 
 	public static void selectOption(String locatorKey, String option) 
 	{
-		driver.findElement(By.id(or.getProperty(locatorKey))).sendKeys(or.getProperty(option));	
+		getElement(locatorKey).sendKeys(or.getProperty(option));
+		//driver.findElement(By.id(or.getProperty(locatorKey))).sendKeys(or.getProperty(option));	
+	}
+	
+	
+	public static WebElement getElement(String locatorKey) 
+	{
+		WebElement element=null;
+		
+		if(locatorKey.endsWith("_id")) {
+			element=driver.findElement(By.id(or.getProperty(locatorKey)));
+		}else if(locatorKey.endsWith("_name")) {
+			element=driver.findElement(By.name(or.getProperty(locatorKey)));
+		}else if(locatorKey.endsWith("_classname")) {
+			element=driver.findElement(By.className(or.getProperty(locatorKey)));
+		}else if(locatorKey.endsWith("_xpath")) {
+			element=driver.findElement(By.xpath(or.getProperty(locatorKey)));
+		}else if(locatorKey.endsWith("_css")) {
+			element=driver.findElement(By.cssSelector(or.getProperty(locatorKey)));
+		}else if(locatorKey.endsWith("_linktext")) {
+			element=driver.findElement(By.linkText(or.getProperty(locatorKey)));
+		}else if(locatorKey.endsWith("_partilalinktext")) {
+			element=driver.findElement(By.partialLinkText(or.getProperty(locatorKey)));
+		}
+		
+		return element;
+	
 	}
 
 }
