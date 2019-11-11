@@ -14,13 +14,17 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
 
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+
 public class BaseTest 
 {
 	public static WebDriver driver;
 	public static Properties p;
 	public static Properties or;
 	public static String projectPath=System.getProperty("user.dir");
-	
+	public static ExtentReports report = ExtentManager.getInstance();
+	public static ExtentTest test;
 	
 	public static void init() throws Exception 
 	{
@@ -34,6 +38,7 @@ public class BaseTest
 		or.load(fis1);
 		
 		PropertyConfigurator.configure(projectPath+"//log4j.properties");
+	
 	}
 	
 	public static void launch(String browser)
